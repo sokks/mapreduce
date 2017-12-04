@@ -25,7 +25,7 @@ matrix2 = args.m2
 dataA = defaultdict(dict)
 dataB = defaultdict(dict)
 with open(os.path.join(dirpath, filename), 'rb') as f:
-    r = csv.reader(f, delimiter=';')
+    r = csv.reader(f, delimiter=',')
     r.next()
     for row in r:
         if row[0] == matrix1:
@@ -67,12 +67,13 @@ s.reducefn = reducefn
 # wait for workers
 print('waiting for workers...')
 results = s.run_server(password="changeme")
+print(results)
 
 # write data
 print('writing results...')
 with open('C.csv', 'wb') as csvout:
     w = csv.writer(csvout, delimiter=',')
     w.writerow(['matrix', 'row', 'column', 'value'])
-    for k, v in results.iteritems():
+    for k, v in sorted(results.iteritems()):
         w.writerow(['C', k[0], k[1], v])
 print('finished')
